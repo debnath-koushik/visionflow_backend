@@ -15,8 +15,10 @@ app = FastAPI()
 # Configure CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173", "http://localhost:3000"],  # Add your frontend origins
-    allow_credentials=True,
+    # allow_origins=["http://localhost:5173", "http://localhost:3000"],  # Add your frontend origins
+    # allow_credentials=True,
+    allow_origins=["*"],  # Allow all origins
+    allow_credentials=False,
     allow_methods=["*"],  # Allow all methods
     allow_headers=["*"],  # Allow all headers
     expose_headers=["X-Matched-Files", "X-Extra-Labels-Removed", "X-Extra-Images-Removed", "X-Files-Added", "X-Train-Count", "X-Valid-Count", "X-Test-Count", "X-Total-Count", "X-Original-Duration", "X-Trimmed-Duration", "X-Total-Frames", "X-Extracted-Frames", "X-Frame-Gap", "X-FPS"],  # Expose custom headers
@@ -564,4 +566,5 @@ async def frame_splitting(file: UploadFile = File(...), frame_gap: int = Form(..
     except Exception as e:
         if cap is not None:
             cap.release()
+
         raise HTTPException(status_code=500, detail=str(e))
